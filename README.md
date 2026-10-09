@@ -2,7 +2,7 @@
 
 How rainfall and drought shape Australia's grain harvests, 1989–2025. A single scrolling story page built with Vega-Lite.
 
-FIT3179 Data Visualisation 2 — Chew Chen Hin (35154667), Monash University Malaysia, 2026.
+FIT3179 Data Visualisation 2, by Chew Chen Hin (35154667), Monash University Malaysia, 2026.
 Live page: https://brandonchiew.github.io/dv2-farmers-climate/
 
 ## Run it locally
@@ -30,7 +30,7 @@ then visit http://localhost:8000.
 |---|---|---|
 | `guess.vl.json` | bar chart, guess-first | drag the 2019 bar (or slider), reveal button; guess is kept for the last section |
 | `map_isohyets.vl.json` | isohyet bands (scalar field map) + proportional circles | tooltips |
-| `panorama.vl.json` | four linked rows on one year axis: ENSO strip, rain capsule heatmap, wheat area, income "roots" | click a year (or use the slider) — the light column moves and later charts follow |
+| `panorama.vl.json` | four linked rows on one year axis: ENSO strip, rain capsule heatmap, wheat area, income "roots" | click a year (or use the slider): the light column moves and later charts follow |
 | `nsw_scatter.vl.json` | connected scatterplot | "be the farmer" rain slider; follows the selected year |
 | `choropleths.vl.json` | choropleth small multiples (2 × 2) | tooltips |
 | `wa_map.vl.json` | WA map with rain-band overlay + locator | tooltips |
