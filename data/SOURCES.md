@@ -22,6 +22,8 @@ All raw files were downloaded on 6 October 2026. Raw downloads live in `raw/`; t
 | `processed/farm_income.csv` | ABARES Agricultural commodities Sept 2026, Statistical Table 2 | all Australian farms, 1994–95 to 2026–27: gross value, total cash costs, net value of farm production, real (inflation-adjusted) net value, $m |
 | `processed/aus_states.topojson` | ABS STE 2021 | 8 states/territories, simplified with mapshaper (0.6%), small islands removed |
 | `processed/isohyets_annual_avg.topojson` | BOM average annual rainfall grid | filled rainfall bands (0–200, 200–300, 300–400, 400–600, 600–800, 800–1200, 1200–1600, 1600–2400, 2400+ mm); grid averaged to 0.15°, contoured, clipped to the coastline |
+| `processed/wheatbelt_outline.geojson` | `isohyets_annual_avg.topojson` via `scripts/clip_isohyets.py` | outer edge of the 300–600 mm bands (the 400 mm line between them dropped), south of 26°S only, Tasmania and short inland pieces removed: the gold "wheat belt" line |
+| `processed/isohyets_sw_wa.geojson` | `isohyets_annual_avg.topojson` via `scripts/clip_isohyets.py` | 300 mm+ rainfall bands clipped to south-west Western Australia (west of 129°E, south of 26.5°S) |
 | `processed/wheat_exports_by_country.csv` | FAOSTAT (tonnes) | year, destination, region, tonnes, 2019–2023 |
 | `processed/wheat_exports_flows.csv` | FAOSTAT (tonnes) | Sankey links: Australia → region → country, average tonnes per year 2019–2023; top 10 destinations + Malaysia named, the rest grouped as "Other" |
 
