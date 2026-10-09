@@ -1,0 +1,28 @@
+<!-- Hero scene (back layer). Replace this file with your own drawing.
+     It is shown full-bleed, cropped to fill the screen and anchored to the bottom edge;
+     a 1100 x 860 drawing (or any image with the same proportions) fits best.
+     PNG/JPG also work: change the src in index.html. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 860" preserveAspectRatio="xMidYMax slice">
+<defs>
+<pattern id="rainP" width="16" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(14)"><line x1="8" y1="2" x2="8" y2="24" stroke="#9CC3D6" stroke-opacity="0.5" style="stroke-width:1.3;stroke-linecap:round"/></pattern>
+<pattern id="rainFar" width="11" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(14)"><line x1="5" y1="2" x2="5" y2="14" stroke="#9CC3D6" stroke-opacity="0.25" style="stroke-width:0.9;stroke-linecap:round"/></pattern>
+<pattern id="furrow" width="12" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-6)"><line x1="0" y1="4" x2="12" y2="4" stroke="#7A5300" stroke-opacity="0.4" style="stroke-width:2"/></pattern>
+</defs>
+<rect x="0" y="0" width="1100" height="860" fill="#1B2A35"/>
+<rect x="640" y="0" width="460" height="860" fill="#3A2A22"/>
+<rect x="560" y="0" width="80" height="860" fill="#2A2A2C"/>
+<circle cx="930" cy="250" r="160" fill="#E7A04B" fill-opacity="0.08"/><circle cx="930" cy="250" r="105" fill="#E7A04B" fill-opacity="0.14"/><circle cx="930" cy="250" r="62" fill="#F0B866"/>
+<g fill="#22313D"><circle cx="40" cy="30" r="110"/><circle cx="190" cy="10" r="130"/><circle cx="350" cy="40" r="120"/><circle cx="500" cy="10" r="120"/></g>
+<g fill="#2C3D4A"><circle cx="110" cy="100" r="80"/><circle cx="260" cy="110" r="92"/><circle cx="420" cy="104" r="84"/><circle cx="560" cy="80" r="56"/></g>
+<rect x="0" y="150" width="600" height="520" fill="url(#rainFar)"/>
+<path d="M0,560 C140,520 260,530 400,548 C520,560 620,540 760,520 C880,506 1000,520 1100,512 L1100,860 L0,860Z" fill="#2E3B44"/>
+<path d="M640,560 C760,540 880,548 1000,536 C1050,532 1080,534 1100,532 L1100,860 L640,860Z" fill="#5A3A28"/>
+<path d="M0,610 C150,590 300,600 460,612 C560,620 620,610 660,604 L660,860 L0,860Z" fill="#B88419"/>
+<path d="M0,610 C150,590 300,600 460,612 C560,620 620,610 660,604 L660,860 L0,860Z" fill="url(#furrow)"/>
+<path d="M640,606 C760,596 880,604 1000,612 C1050,616 1080,614 1100,612 L1100,860 L640,860Z" fill="#9A4A24"/>
+<g fill="none" stroke="#6E3318" style="stroke-width:1.5"><path d="M700,660 l18,14 l-6,22 l20,10"/><path d="M780,640 l-10,20 l16,12 l-4,24"/><path d="M880,672 l22,6 l8,20 l18,4"/><path d="M980,650 l-14,18 l10,16"/><path d="M1040,700 l16,-12 l14,8"/><path d="M820,740 l26,-6 l12,14"/><path d="M930,760 l-18,12 l6,20"/></g>
+<g fill="none" stroke="#F0B866" stroke-opacity="0.35" style="stroke-width:1.2"><path d="M720,560 q10,-6 20,0 t20,0 t20,0"/><path d="M860,548 q10,-6 20,0 t20,0 t20,0"/><path d="M990,556 q10,-6 20,0 t20,0"/></g>
+<rect x="0" y="140" width="610" height="480" fill="url(#rainP)"/>
+<g transform="translate(90,612)" fill="#D9D2C2"><rect x="0" y="-74" width="28" height="74"/><path d="M0,-74 Q14,-92 28,-74Z"/><rect x="32" y="-88" width="28" height="88"/><path d="M32,-88 Q46,-106 60,-88Z"/><rect x="64" y="-66" width="24" height="66"/><path d="M64,-66 Q76,-80 88,-66Z"/></g>
+<g transform="translate(652,606)" fill="#0E141A"><ellipse cx="0" cy="-64" rx="15" ry="3.6"/><rect x="-6" y="-74" width="12" height="10" rx="3"/><circle cx="0" cy="-56" r="6"/><path d="M-9,-50 L9,-50 L11,-21 L-11,-21Z"/><rect x="-9" y="-21" width="7" height="23"/><rect x="2" y="-21" width="7" height="23"/><path d="M7,-48 L-3,-66 L0,-68 L11,-51Z"/></g>
+</svg>

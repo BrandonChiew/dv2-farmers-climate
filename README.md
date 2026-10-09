@@ -17,6 +17,7 @@ then visit http://localhost:8000.
 | Path | Contents |
 |---|---|
 | `index.html` | the page: hero, nine story sections, footer |
+| `assets/hero.svg`, `assets/hero-front.svg` | hero drawing (back layer, and the wheat stalks in front of the title); swap in your own drawing here |
 | `css/style.css` | design tokens, layout, layered SVG scenes, phone layout |
 | `js/main.js` | embeds every chart, the guess game, the rain slider, the page-wide year link, text readouts computed from the CSVs |
 | `js/*.vl.json` | one Vega-Lite spec per chart (list below) |
