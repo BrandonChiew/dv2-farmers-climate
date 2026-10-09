@@ -41,3 +41,19 @@ then visit http://localhost:8000.
 
 ## Data
 Bureau of Meteorology (rainfall series and grid, ENSO history, Annual Climate Statements), ABARES (Australian Crop Report and Agricultural commodities, September 2026) and the Australian Bureau of Statistics (state boundaries). Details in `data/SOURCES.md`.
+
+## AI use
+Claude (Anthropic's AI assistant, used through Claude Code) did this:
+- wrote the HTML, CSS and JavaScript (`index.html`, `css/style.css`, `js/main.js`) and every Vega-Lite spec in `js/*.vl.json`
+- drew the SVG illustrations (hero, night scene, farm strip, icons) from my description of the scenes
+- processed the raw downloads in `data/raw/` into `data/processed/` with scripts (`data/scripts/`)
+- helped plan the page structure
+- made wording edits to the text when I asked
+
+I did this:
+- chose the topic and the story
+- picked the data sources
+- wrote the text
+- designed the hero scene
+- chose the fonts and colours
+- tested the page and checked the numbers
