@@ -117,9 +117,39 @@ function setupPanorama(view) {
   setYear(currentYear);
 }
 
+/* ---------- NSW: be the farmer ---------- */
+function listYears(ys) {
+  return ys.length < 2 ? ys.join('') : ys.slice(0, -1).join(', ') + ' and ' + ys[ys.length - 1];
+}
+function setupNSW(view) {
+  const input = document.getElementById('rain-input');
+  const out = document.getElementById('rain-out');
+  const readout = document.getElementById('rain-readout');
+  const update = () => {
+    const c = +input.value, lo = c - 30, hi = c + 30;
+    out.textContent = `${lo}–${hi} mm`;
+    view.signal('rain', c).runAsync();
+    dataReady.then(d => {
+      const hits = d.rain.filter(r => r.state_code === 'NSW' && Math.abs(r.rain_cool_mm - c) <= 30)
+        .sort((a, b) => a.year - b.year);
+      if (!hits.length) { readout.textContent = `No season since 1989 got ${lo}–${hi} mm in NSW.`; return; }
+      const ys = hits.map(r => r.wheat_yield_t_ha);
+      const min = Math.min(...ys).toFixed(1), max = Math.max(...ys).toFixed(1);
+      readout.textContent = `${hits.length === 1 ? 'One season' : hits.length + ' seasons'} got ${lo}–${hi} mm: ${listYears(hits.map(r => r.year))}. ` +
+        `Wheat yielded ${min === max ? min : min + ' to ' + max} tonnes a hectare.`;
+    });
+  };
+  input.addEventListener('input', update);
+  update();
+  yearListeners.push(y => view.signal('selYear', y).runAsync());
+  view.signal('selYear', currentYear).runAsync();
+}
+
 // Wait for web fonts so Vega measures text with the right typeface.
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
   embed('c-guess', 'guess.vl.json').then(v => v && setupGuess(v));
   embed('c-map', 'map_isohyets.vl.json');
   embed('c-pano', 'panorama.vl.json').then(v => v && setupPanorama(v));
+  embed('c-nsw', 'nsw_scatter.vl.json').then(v => v && setupNSW(v));
+  embed('c-choro', 'choropleths.vl.json');
 });

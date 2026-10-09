@@ -136,6 +136,14 @@ button[disabled] { opacity: .55; cursor: default; }
 .guess-result { font: 800 clamp(28px, 4vw, 40px)/1.05 var(--display); text-transform: uppercase; color: var(--cream); margin-top: 22px; min-height: 1em; max-width: 22ch; }
 .guess-result span { display: block; font: italic 400 18px/1.5 var(--body); text-transform: none; color: var(--muted-dark); margin-top: 6px; }
 
+/* Be the farmer */
+.farmer { margin-top: 14px; max-width: 470px; font-size: 16px; }
+.farmer label { display: block; margin-bottom: 6px; }
+.farmer-row { display: flex; align-items: center; gap: 14px; }
+.farmer input { flex: 1; accent-color: var(--dry); }
+.farmer output { font: 800 22px/1 var(--display); color: var(--dry); min-width: 104px; }
+#rain-readout { margin-top: 10px; min-height: 3.2em; }
+
 /* ---------- Night bookend ---------- */
 .night { position: relative; min-height: 660px; overflow: hidden; background: var(--night); display: flex; align-items: center; }
 .night-text { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 110px 24px 160px; width: 100%; }
