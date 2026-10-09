@@ -109,11 +109,30 @@
 <div class="copy">
 <p>Each column is one growing season, 1989 to 2025. Read it from the top down: the Pacific pattern that year, the rain each state got from April to October, the wheat harvest, and the money farmers kept after paying their costs.</p>
 </div>
+<div class="pano-legend" aria-label="Legend">
+<span class="lg"><svg viewBox="0 0 24 24" class="lg-sun" aria-hidden="true"><use href="#sun"/></svg>El Niño (usually dry)</span>
+<span class="lg"><svg viewBox="0 0 28 18" class="lg-cloud" aria-hidden="true"><use href="#cloud"/></svg>La Niña (usually wet)</span>
+<span class="lg"><span class="lg-tick" aria-hidden="true"></span>Neutral</span>
+<span class="lg lg-scale">Rain, % of normal:
+<span class="sw" style="background:#8C510A"></span>&lt;50
+<span class="sw" style="background:#D8B365"></span>50–70
+<span class="sw" style="background:#F3DFA2"></span>70–90
+<span class="sw" style="background:#E3EFE9"></span>90–110
+<span class="sw" style="background:#A9DDD4"></span>110–130
+<span class="sw" style="background:#4FB3A6"></span>130–150
+<span class="sw" style="background:#01665E"></span>150+</span>
+</div>
 <div class="pano">
 <div class="figure">
-<div class="chart" id="c-pano"></div>
+<div class="chart" id="c-pano" role="img" aria-label="Four linked rows from 1989 to 2025. Top: El Niño years shown as suns, La Niña years as clouds. Second: April to October rain for NSW, Victoria, South Australia, Western Australia and Queensland as capsules from brown (under half of normal) to teal (over one and a half times normal). Third: Australia's wheat harvest, with dips to 10.1 million tonnes in 2002 and 10.8 in 2006, and a record 40.5 in 2022. Bottom: money farmers kept after costs, hanging down like roots, from almost nothing in 1994–95 to a record 25.2 billion dollars in 2021–22."></div>
 </div>
-<aside class="pano-notes" id="pano-notes"></aside>
+<aside class="pano-notes">
+<p class="year-card" id="year-card" aria-live="polite"></p>
+<p class="big-stat"><svg viewBox="0 0 24 24" class="lg-sun" aria-hidden="true"><use href="#sun"/></svg><span>El Niño years: <strong>16.2 Mt</strong> of wheat on average.</span></p>
+<p class="big-stat"><svg viewBox="0 0 28 18" class="lg-cloud" aria-hidden="true"><use href="#cloud"/></svg><span>La Niña years: <strong>27.0 Mt</strong>.</span></p>
+<p>El Niño is a natural swing in Pacific Ocean temperatures that usually brings dry winters to eastern Australia. Harvests have also grown over time, so dry and wet years ‘tend to’ matter, not ‘cause’ on their own.</p>
+<p>2019 had no El Niño. The Bureau of Meteorology says a very strong pattern in the Indian Ocean dried the country instead: the driest year Australia has recorded, 277.6 mm.</p>
+</aside>
 </div>
 <p class="hint">Click any year: the light column moves, and the charts further down the page that run through time follow that year.</p>
 <p class="bridge">The dry columns keep landing on the dips. Is the rain really what decides it?</p>

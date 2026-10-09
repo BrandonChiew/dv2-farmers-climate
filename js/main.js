@@ -72,8 +72,54 @@ function setupGuess(view) {
   });
 }
 
+/* ---------- Data for text readouts (same CSVs the charts use) ---------- */
+function loadCSV(name) {
+  return vega.loader().load('data/processed/' + name)
+    .then(text => vega.read(text, { type: 'csv', parse: 'auto' }));
+}
+const dataReady = Promise.all(['crops_by_state.csv', 'rain_vs_yield.csv', 'farm_income.csv', 'climate_drivers.csv'].map(loadCSV))
+  .then(([crops, rain, income, drivers]) => ({ crops, rain, income, drivers }));
+
+const ENSO_NAME = { 'El Nino': 'El Niño', 'La Nina': 'La Niña', Neutral: 'no El Niño or La Niña' };
+
+function yearCard(d, year) {
+  const wheat = d.crops.find(r => r.state_code === 'AUS' && r.crop === 'wheat' && r.year === year);
+  const inc = d.income.find(r => r.year === year);
+  const enso = d.drivers.find(r => r.year === year);
+  const nsw = d.rain.find(r => r.state_code === 'NSW' && r.year === year);
+  const parts = [];
+  if (wheat) parts.push(`Wheat: ${(wheat.production_kt / 1000).toFixed(1)} Mt${wheat.status !== 'actual' ? ' (ABARES ' + wheat.status + ')' : ''}.`);
+  if (nsw) parts.push(`NSW rain: ${Math.round(nsw.rain_cool_pct_of_avg)}% of normal.`);
+  if (inc) parts.push(`Farmers kept $${(inc.real_net_value_m / 1000).toFixed(1)}b.`);
+  if (enso) parts.push(`Pacific: ${ENSO_NAME[enso.enso]}.`);
+  return `<b>${wheat ? wheat.season : year}</b>${parts.join(' ')}`;
+}
+
+/* ---------- Page-wide year link ---------- */
+// The panorama's point selection "yr" drives everything; other charts get the year
+// through their own "selYear" signal (added section by section).
+let currentYear = 2019;
+const yearListeners = [];
+function setYear(year) {
+  currentYear = year;
+  dataReady.then(d => {
+    const card = document.getElementById('year-card');
+    if (card) card.innerHTML = yearCard(d, year);
+  });
+  yearListeners.forEach(fn => fn(year));
+}
+
+function setupPanorama(view) {
+  view.addSignalListener('yr', (name, value) => {
+    const y = value && value.year ? +value.year[0] : null;
+    if (y && y !== currentYear) setYear(y);
+  });
+  setYear(currentYear);
+}
+
 // Wait for web fonts so Vega measures text with the right typeface.
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
   embed('c-guess', 'guess.vl.json').then(v => v && setupGuess(v));
   embed('c-map', 'map_isohyets.vl.json');
+  embed('c-pano', 'panorama.vl.json').then(v => v && setupPanorama(v));
 });

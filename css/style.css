@@ -97,7 +97,22 @@ p { margin: 0 0 1em; }
 .s-red .map-shadow .land_marks { filter: drop-shadow(9px 11px 0 rgba(40, 18, 8, .45)); }
 
 /* Panorama */
-.pano { display: grid; grid-template-columns: auto minmax(220px, 300px); gap: 28px; align-items: start; margin: 18px 0 20px; }
+.pano { display: grid; grid-template-columns: auto minmax(220px, 300px); gap: 36px; align-items: start; margin: 18px 0 20px; }
+
+.pano-legend { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center; font-size: 15px; color: var(--muted-dark); margin-top: 8px; }
+.lg { display: inline-flex; align-items: center; gap: 8px; }
+.lg-sun { width: 22px; height: 22px; fill: var(--sun); stroke: var(--sun); }
+.lg-cloud { width: 26px; height: 17px; fill: var(--cloud); }
+.lg-tick { width: 2px; height: 12px; background: #8A7562; }
+.lg-scale { gap: 5px; flex-wrap: wrap; }
+.sw { display: inline-block; width: 12px; height: 18px; border-radius: 6px; margin-left: 6px; }
+.pano-notes { font-size: 16px; line-height: 1.55; color: #D6DEE2; padding-top: 34px; }
+.pano-notes p { margin-bottom: 1.1em; }
+.big-stat { font: 600 18px/1.4 var(--body); color: var(--cream); display: flex; gap: 10px; align-items: flex-start; }
+.big-stat svg { flex: none; margin-top: 4px; }
+.big-stat strong { font: 800 26px/1 var(--display); }
+.year-card { border-left: 3px solid var(--gold); padding-left: 14px; color: var(--cream); min-height: 4.6em; }
+.year-card b { font: 900 34px/1 var(--display); display: block; margin-bottom: 4px; }
 
 /* Farm silhouette strip */
 .farmstrip { display: block; width: 100%; height: 70px; margin-bottom: 90px; background: var(--deep); }
