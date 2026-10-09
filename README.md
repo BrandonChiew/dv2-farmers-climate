@@ -16,7 +16,7 @@ then visit http://localhost:8000.
 ## What is where
 | Path | Contents |
 |---|---|
-| `index.html` | the page: hero, ten story sections, footer |
+| `index.html` | the page: hero, nine story sections, footer |
 | `assets/hero.svg`, `assets/hero-front.svg` | hero drawing (back layer, and the wheat stalks in front of the title); swap in your own drawing here |
 | `css/style.css` | design tokens, layout, layered SVG scenes, phone layout |
 | `js/copy.js` | **all page text**, one commented block per section; edit wording here |
@@ -25,6 +25,7 @@ then visit http://localhost:8000.
 | `data/processed/` | cleaned files the page loads |
 | `data/raw/` | original downloads (large zips are not committed) |
 | `data/scripts/clip_isohyets.py` | builds the wheat-belt outline and the south-west WA rain bands from the isohyet TopoJSON |
+| `docs/CHART_NOTES.md` | one paragraph per chart: what it shows, idiom, data fields, why |
 | `data/SOURCES.md` | where every file came from |
 
 ## Charts
@@ -54,6 +55,8 @@ Claude (Anthropic's AI assistant, used through Claude Code) did this:
 - processed the raw downloads in `data/raw/` into `data/processed/` with scripts (`data/scripts/`)
 - helped plan the page structure
 - made wording edits to the text when I asked
+- drafted the text that goes with the lollipop, bump and waffle charts (marked DRAFT in `js/copy.js`)
+- drafted the chart notes in `docs/CHART_NOTES.md`
 
 I did this:
 - chose the topic and the story
