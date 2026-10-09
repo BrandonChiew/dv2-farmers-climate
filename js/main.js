@@ -8,9 +8,32 @@ const ACTUAL_2019 = 14.5; // shown only after the reveal; the chart reads it fro
 function embed(id, spec) {
   return vegaEmbed('#' + id, 'js/' + spec, OPTS).then(res => {
     views[id] = res.view;
+    fit(id);
     return res.view;
   }).catch(err => console.error(spec, err));
 }
+
+/* ---------- Small screens ---------- */
+// Shrink a chart that is wider than its column, but never below 72% so the text
+// stays readable; whatever is still too wide scrolls sideways, with a cue.
+// (Every interaction picks marks by their SVG element, so scaling is safe.)
+const MIN_SCALE = 0.72;
+function fit(id) {
+  const box = document.getElementById(id);
+  const svg = box && box.querySelector('svg');
+  if (!svg) return;
+  const natural = +svg.getAttribute('width');
+  const avail = box.clientWidth;
+  const w = Math.max(Math.min(natural, avail), Math.round(natural * MIN_SCALE));
+  svg.style.width = w + 'px';
+  svg.style.height = 'auto';
+  box.classList.toggle('swipe', w > avail + 1);
+}
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => Object.keys(views).forEach(fit), 150);
+});
 
 /* ---------- Guess the 2019 harvest ---------- */
 function readGuess() {

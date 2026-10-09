@@ -91,6 +91,10 @@ p { margin: 0 0 1em; }
 .figure { min-width: 0; margin: 0; }
 .chart { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
 .chart > div, .chart svg { display: block; }
+.chart.swipe::after { /* shown only when a chart is still wider than the screen */
+  content: "Swipe sideways to see the whole chart \2192"; display: block; position: sticky; left: 0;
+  font-size: 13px; font-style: italic; opacity: .75; padding-top: 6px;
+}
 
 /* Hard offset shadow under maps */
 /* (Vega gives each mark group the class "<name>_marks"; maps name their land layer "land") */
