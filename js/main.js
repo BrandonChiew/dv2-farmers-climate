@@ -117,6 +117,12 @@ function setupPanorama(view) {
   setYear(currentYear);
 }
 
+// Charts that simply mark the selected year through a "selYear" signal.
+function followYear(view) {
+  yearListeners.push(y => view.signal('selYear', y).runAsync());
+  view.signal('selYear', currentYear).runAsync();
+}
+
 /* ---------- NSW: be the farmer ---------- */
 function listYears(ys) {
   return ys.length < 2 ? ys.join('') : ys.slice(0, -1).join(', ') + ' and ' + ys[ys.length - 1];
@@ -141,8 +147,24 @@ function setupNSW(view) {
   };
   input.addEventListener('input', update);
   update();
-  yearListeners.push(y => view.signal('selYear', y).runAsync());
-  view.signal('selYear', currentYear).runAsync();
+  followYear(view);
+}
+
+/* ---------- Barley note: where 2019's barley held up ---------- */
+function barleyNote() {
+  const el = document.getElementById('barley-note');
+  dataReady.then(d => {
+    const change = (state, year) => {
+      const rows = d.crops.filter(r => r.state_code === state && r.crop === 'barley');
+      const now = rows.find(r => r.year === year).production_kt;
+      const prev = rows.filter(r => r.year >= year - 5 && r.year < year);
+      return 100 * (now / (prev.reduce((s, r) => s + r.production_kt, 0) / prev.length) - 1);
+    };
+    const pct = v => (v >= 0 ? '+' : '−') + Math.abs(Math.round(v)) + '%';
+    const aus = change('AUS', 2019), vic = change('VIC', 2019), nsw = change('NSW', 2019);
+    el.textContent = `In 2019 barley held steady (${pct(aus)}). The state data shows where it held up: ` +
+      `Victoria grew ${Math.round(vic)}% more barley than its five-year average, while New South Wales grew ${Math.abs(Math.round(nsw))}% less.`;
+  });
 }
 
 // Wait for web fonts so Vega measures text with the right typeface.
@@ -152,4 +174,10 @@ function setupNSW(view) {
   embed('c-pano', 'panorama.vl.json').then(v => v && setupPanorama(v));
   embed('c-nsw', 'nsw_scatter.vl.json').then(v => v && setupNSW(v));
   embed('c-choro', 'choropleths.vl.json');
+  embed('c-wamap', 'wa_map.vl.json');
+  embed('c-wa', 'wa_scatter.vl.json').then(v => v && followYear(v));
+  embed('c-swing', 'swing.vl.json');
+  embed('c-stream', 'streamgraph.vl.json').then(v => v && followYear(v));
+  embed('c-diverge', 'diverging.vl.json');
+  barleyNote();
 });
