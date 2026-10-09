@@ -86,14 +86,15 @@ p { margin: 0 0 1em; }
 
 .split { display: grid; grid-template-columns: minmax(260px, 1fr) auto; gap: 48px; align-items: start; }
 .split.even { grid-template-columns: auto auto; justify-content: space-between; gap: 32px; margin-top: 12px; }
-.map-split { grid-template-columns: minmax(240px, 340px) auto; }
+.map-split { grid-template-columns: minmax(240px, 360px) auto; justify-content: space-between; }
 .figure { min-width: 0; margin: 0; }
 .chart { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
 .chart > div, .chart svg { display: block; }
 
 /* Hard offset shadow under maps */
-.map-shadow .shadowed { filter: drop-shadow(10px 12px 0 rgba(58, 42, 30, .32)); }
-.s-red .map-shadow .shadowed { filter: drop-shadow(10px 12px 0 rgba(40, 18, 8, .45)); }
+/* (Vega gives each mark group the class "<name>_marks"; maps name their land layer "land") */
+.map-shadow .land_marks { filter: drop-shadow(9px 11px 0 rgba(58, 42, 30, .30)); }
+.s-red .map-shadow .land_marks { filter: drop-shadow(9px 11px 0 rgba(40, 18, 8, .45)); }
 
 /* Panorama */
 .pano { display: grid; grid-template-columns: auto minmax(220px, 300px); gap: 28px; align-items: start; margin: 18px 0 20px; }

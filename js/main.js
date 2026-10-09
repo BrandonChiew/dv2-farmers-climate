@@ -75,4 +75,5 @@ function setupGuess(view) {
 // Wait for web fonts so Vega measures text with the right typeface.
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
   embed('c-guess', 'guess.vl.json').then(v => v && setupGuess(v));
+  embed('c-map', 'map_isohyets.vl.json');
 });
