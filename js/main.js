@@ -1,4 +1,5 @@
-// When the rain stops — embeds every chart and links them together.
+// When the rain stops: embeds every chart and links them together.
+// All words the reader sees are in js/copy.js (COPY).
 const views = {};
 window.views = views; // handy for checking signal names in the console
 
@@ -49,9 +50,7 @@ function updateCallback() {
   const el = document.getElementById('guess-callback');
   if (!el) return;
   const g = window.__guess;
-  el.textContent = g == null
-    ? `In 2019 the harvest was ${ACTUAL_2019} Mt. Now you know why.`
-    : `You guessed ${g.toFixed(1)} Mt for 2019. Now you know why it was ${ACTUAL_2019}.`;
+  el.textContent = g == null ? COPY.end.callbackNoGuess(ACTUAL_2019) : COPY.end.callback(g.toFixed(1), ACTUAL_2019);
 }
 
 function setupGuess(view) {
@@ -87,11 +86,11 @@ function setupGuess(view) {
     view.signal('reveal', true).runAsync();
     if (window.__guess == null) saveGuess(parseFloat(input.value));
     const g = window.__guess, diff = g - ACTUAL_2019;
-    const how = Math.abs(diff) < 0.75 ? 'Spot on.'
-      : `You were ${Math.abs(diff).toFixed(1)} Mt ${diff > 0 ? 'too high' : 'too low'}.`;
-    result.innerHTML = `Less than half.<span>The real 2019 harvest was ${ACTUAL_2019} Mt, under half of 2016. You guessed ${g.toFixed(1)} Mt. ${how}</span>`;
+    const how = Math.abs(diff) < 0.75 ? COPY.guess.spotOn
+      : COPY.guess.off(Math.abs(diff).toFixed(1), diff > 0 ? COPY.guess.tooHigh : COPY.guess.tooLow);
+    result.innerHTML = `${COPY.guess.resultBig}<span>${COPY.guess.resultSmall(ACTUAL_2019, g.toFixed(1), how)}</span>`;
     button.disabled = true;
-    button.textContent = 'Real harvest shown';
+    button.textContent = COPY.guess.buttonDone;
   });
 }
 
@@ -103,7 +102,7 @@ function loadCSV(name) {
 const dataReady = Promise.all(['crops_by_state.csv', 'rain_vs_yield.csv', 'farm_income.csv', 'climate_drivers.csv'].map(loadCSV))
   .then(([crops, rain, income, drivers]) => ({ crops, rain, income, drivers }));
 
-const ENSO_NAME = { 'El Nino': 'El Niño', 'La Nina': 'La Niña', Neutral: 'no El Niño or La Niña' };
+const ENSO_NAME = { 'El Nino': COPY.seasons.elNino, 'La Nina': COPY.seasons.laNina, Neutral: COPY.seasons.neutral };
 
 function yearCard(d, year) {
   const wheat = d.crops.find(r => r.state_code === 'AUS' && r.crop === 'wheat' && r.year === year);
@@ -111,10 +110,11 @@ function yearCard(d, year) {
   const enso = d.drivers.find(r => r.year === year);
   const nsw = d.rain.find(r => r.state_code === 'NSW' && r.year === year);
   const parts = [];
-  if (wheat) parts.push(`Wheat: ${(wheat.production_kt / 1000).toFixed(1)} Mt${wheat.status !== 'actual' ? ' (ABARES ' + wheat.status + ')' : ''}.`);
-  if (nsw) parts.push(`NSW rain: ${Math.round(nsw.rain_cool_pct_of_avg)}% of normal.`);
-  if (inc) parts.push(`Farmers kept $${(inc.real_net_value_m / 1000).toFixed(1)}b.`);
-  if (enso) parts.push(`Pacific: ${ENSO_NAME[enso.enso]}.`);
+  const c = COPY.seasons;
+  if (wheat) parts.push(c.cardWheat((wheat.production_kt / 1000).toFixed(1), wheat.status !== 'actual' ? wheat.status : ''));
+  if (nsw) parts.push(c.cardRain(Math.round(nsw.rain_cool_pct_of_avg)));
+  if (inc) parts.push(c.cardMoney((inc.real_net_value_m / 1000).toFixed(1)));
+  if (enso) parts.push(c.cardPacific(ENSO_NAME[enso.enso]));
   return `<b>${wheat ? wheat.season : year}</b>${parts.join(' ')}`;
 }
 
@@ -169,11 +169,11 @@ function setupNSW(view) {
     dataReady.then(d => {
       const hits = d.rain.filter(r => r.state_code === 'NSW' && Math.abs(r.rain_cool_mm - c) <= 30)
         .sort((a, b) => a.year - b.year);
-      if (!hits.length) { readout.textContent = `No season since 1989 got ${lo}–${hi} mm in NSW.`; return; }
+      if (!hits.length) { readout.textContent = COPY.nsw.noSeason(lo, hi); return; }
       const ys = hits.map(r => r.wheat_yield_t_ha);
       const min = Math.min(...ys).toFixed(1), max = Math.max(...ys).toFixed(1);
-      readout.textContent = `${hits.length === 1 ? 'One season' : hits.length + ' seasons'} got ${lo}–${hi} mm: ${listYears(hits.map(r => r.year))}. ` +
-        `Wheat yielded ${min === max ? min : min + ' to ' + max} tonnes a hectare.`;
+      readout.textContent = COPY.nsw.seasons(hits.length, lo, hi, listYears(hits.map(r => r.year))) +
+        COPY.nsw.yield(min === max ? min : min + ' to ' + max);
     });
   };
   input.addEventListener('input', update);
@@ -193,8 +193,7 @@ function barleyNote() {
     };
     const pct = v => (v >= 0 ? '+' : '−') + Math.abs(Math.round(v)) + '%';
     const aus = change('AUS', 2019), vic = change('VIC', 2019), nsw = change('NSW', 2019);
-    el.textContent = `In 2019 barley held steady (${pct(aus)}). The state data shows where it held up: ` +
-      `Victoria grew ${Math.round(vic)}% more barley than its five-year average, while New South Wales grew ${Math.abs(Math.round(nsw))}% less.`;
+    el.textContent = COPY.paddock.barley(pct(aus), Math.round(vic), Math.abs(Math.round(nsw)));
   });
 }
 
