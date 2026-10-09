@@ -110,10 +110,18 @@ function setYear(year) {
 }
 
 function setupPanorama(view) {
+  const input = document.getElementById('year-input');
+  const unit = view.data('yr_store')[0].unit;
+  const fields = view.data('yr_store')[0].fields;
   view.addSignalListener('yr', (name, value) => {
     const y = value && value.year ? +value.year[0] : null;
     if (y && y !== currentYear) setYear(y);
   });
+  // Keyboard / slider route to the same selection.
+  input.addEventListener('input', () => {
+    view.data('yr_store', [{ unit, fields, values: [+input.value] }]).runAsync();
+  });
+  yearListeners.push(y => { input.value = y; });
   setYear(currentYear);
 }
 

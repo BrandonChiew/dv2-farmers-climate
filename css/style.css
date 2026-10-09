@@ -113,6 +113,8 @@ p { margin: 0 0 1em; }
 .big-stat svg { flex: none; margin-top: 4px; }
 .big-stat strong { font: 800 26px/1 var(--display); }
 .year-card { border-left: 3px solid var(--gold); padding-left: 14px; color: var(--cream); min-height: 4.6em; }
+.year-pick { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted-dark); margin: -6px 0 26px 17px; }
+.year-pick input { accent-color: var(--gold); flex: 1; max-width: 170px; }
 .year-card b { font: 900 34px/1 var(--display); display: block; margin-bottom: 4px; }
 
 /* Farm silhouette strip */
