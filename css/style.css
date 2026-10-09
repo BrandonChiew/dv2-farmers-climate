@@ -111,6 +111,15 @@ button:hover { background: #F6D88A; }
 button:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--dry); }
 button[disabled] { opacity: .55; cursor: default; }
 
+/* Guess */
+.guess-chart svg { touch-action: none; } /* dragging the bar must not scroll the page */
+.guess-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 18px; }
+.guess-range { font-size: 15px; color: var(--muted-dark); display: flex; align-items: center; gap: 10px; }
+.guess-range input { accent-color: var(--sun); width: 150px; }
+.guess-range output { font: 800 20px/1 var(--display); color: var(--sun); min-width: 56px; }
+.guess-result { font: 800 clamp(28px, 4vw, 40px)/1.05 var(--display); text-transform: uppercase; color: var(--cream); margin-top: 22px; min-height: 1em; max-width: 22ch; }
+.guess-result span { display: block; font: italic 400 18px/1.5 var(--body); text-transform: none; color: var(--muted-dark); margin-top: 6px; }
+
 /* ---------- Night bookend ---------- */
 .night { position: relative; min-height: 660px; overflow: hidden; background: var(--night); display: flex; align-items: center; }
 .night-text { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 110px 24px 160px; width: 100%; }
@@ -146,6 +155,7 @@ button[disabled] { opacity: .55; cursor: default; }
   .hero-text { top: 7vh; }
   .bridge { font-size: 19px; }
   .chart { padding-bottom: 6px; }
+  .guess-range { flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

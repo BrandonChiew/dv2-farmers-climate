@@ -71,7 +71,12 @@
 <p class="hint">Your guess stays on the page and comes back in the last section.</p>
 </div>
 <div class="figure">
-<div class="chart" id="c-guess"></div>
+<div class="chart guess-chart" id="c-guess" role="img" aria-label="Bar chart. 2016 wheat harvest: 31.8 million tonnes. A dashed bar for 2019 shows your guess; drag it up or down, or use the slider below."></div>
+<div class="guess-controls">
+<label class="guess-range">Or set your guess: <input type="range" id="guess-input" min="0" max="40" step="0.5" value="25"> <output id="guess-out" for="guess-input">25.0 Mt</output></label>
+<button type="button" id="reveal">Show the real harvest</button>
+</div>
+<p class="guess-result" id="guess-result" aria-live="polite"></p>
 </div>
 </div>
 <div class="wrap"><p class="bridge">To see why a dry year hurts so much, start with where the rain falls.</p></div>
