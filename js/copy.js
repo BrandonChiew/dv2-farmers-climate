@@ -104,6 +104,8 @@ const COPY = {
     heading: `NSW swings hardest: from fourth to second`,
     intro: `Between 2019, the driest year on record, and 2022, the record harvest, every mainland state’s wheat yield rose. New South Wales rose the most: from 0.8 to 3.0 tonnes a hectare. It went from the fourth-biggest wheat grower to the second.`,
     hint: `Hover a state to light it up in both charts. Tasmania grows too little wheat to show.`,
+    // DRAFT (written by Claude with the bump chart, rewrite in your own words)
+    bumpHint: `The same ranking for every season since 1989. Hover a line to follow one state; click any point to choose that year for the whole page.`,
     bridge: `Wheat isn’t the only crop in the paddock. Does everything else rise and fall with it?`,
   },
 
@@ -113,10 +115,22 @@ const COPY = {
     intro: `Barley and canola grow in the same season and on the same farms as wheat. Stacked together, all three shrink in the drought years.`,
     // Note under the diverging bars. pct values arrive already formatted (+3%).
     barley: (aus, vic, nsw) => `In 2019 barley held steady (${aus}). The state data shows where it held up: Victoria grew ${vic}% more barley than its five-year average, while New South Wales grew ${nsw}% less.`,
+    // DRAFT (written by Claude with the waffle chart, rewrite in your own words)
+    waffleHint: `The third waffle follows the year you chose in the panorama. Hover a square for its crop and tonnes.`,
     bridge: `Across 37 seasons, the rain, the harvest and the money have moved together.`,
   },
 
-  /* ---------- 8. Night: when the rain stops, the harvest stops ---------- */
+  /* ---------- 8. The money follows the harvest (lollipop) ----------
+     DRAFT: this whole block was written by Claude with the new chart.
+     Rewrite it in your own words. */
+  money: {
+    heading: `The money follows the harvest`,
+    intro: `Each stick is one season: the money farms kept after paying their costs, in today’s dollars. The head is shaded by that season’s wheat harvest, so the pale heads are the small harvests.`,
+    hint: `Hover a head for its numbers. Click one to choose that year for the whole page; dashed heads are ABARES estimates and the 2026 forecast.`,
+    bridge: `So the last word goes back to the rain.`,
+  },
+
+  /* ---------- 9. Night: when the rain stops, the harvest stops ---------- */
   end: {
     heading: `When the rain stops, the harvest stops`,
     lead: `In the worst dry years, Australia’s wheat harvest fell by half and farmers kept about half as much money. In the wettest, they broke records on both. ABARES expects a smaller crop in 2026–27: 29.9 Mt, down from 36.0 Mt.`,
@@ -140,6 +154,9 @@ const COPY = {
    swing.vl.json        chart titles, "about 3.5 times more"
    streamgraph.vl.json  title and subtitle
    diverging.vl.json    title
+   bump.vl.json         title and subtitle
+   waffle.vl.json       title, "2019, the drought", "2022, the record", "Year you chose:"
+   lollipop.vl.json     title, legend title, "estimates and forecast", "a record"
    --------------------------------------------------------------------- */
 
 // Put each piece of text into the element that names it with data-copy="block.name".

@@ -193,3 +193,6 @@ button[disabled] { opacity: .55; cursor: default; }
   html { scroll-behavior: auto; }
   * { transition: none !important; animation: none !important; }
 }
+
+/* Extra charts */
+.bump, .waffle { margin-top: 56px; }

@@ -123,6 +123,8 @@ function yearCard(d, year) {
 // through their own "selYear" signal (added section by section).
 let currentYear = 2019;
 const yearListeners = [];
+// Choose a year for the whole page from any chart (set up by the panorama).
+let selectYear = setYear;
 function setYear(year) {
   currentYear = year;
   dataReady.then(d => {
@@ -141,9 +143,8 @@ function setupPanorama(view) {
     if (y && y !== currentYear) setYear(y);
   });
   // Keyboard / slider route to the same selection.
-  input.addEventListener('input', () => {
-    view.data('yr_store', [{ unit, fields, values: [+input.value] }]).runAsync();
-  });
+  selectYear = y => view.data('yr_store', [{ unit, fields, values: [y] }]).runAsync();
+  input.addEventListener('input', () => selectYear(+input.value));
   yearListeners.push(y => { input.value = y; });
   setYear(currentYear);
 }
@@ -152,6 +153,14 @@ function setupPanorama(view) {
 function followYear(view) {
   yearListeners.push(y => view.signal('selYear', y).runAsync());
   view.signal('selYear', currentYear).runAsync();
+}
+
+// Charts whose marks carry a year: clicking a mark chooses that year for the page.
+function clickYear(view) {
+  view.addEventListener('click', (evt, item) => {
+    const y = item && item.datum && item.datum.year;
+    if (y >= 1989 && y <= 2025) selectYear(y);
+  });
 }
 
 /* ---------- NSW: be the farmer ---------- */
@@ -208,6 +217,9 @@ function barleyNote() {
   embed('c-wa', 'wa_scatter.vl.json').then(v => v && followYear(v));
   embed('c-swing', 'swing.vl.json');
   embed('c-stream', 'streamgraph.vl.json').then(v => v && followYear(v));
+  embed('c-bump', 'bump.vl.json').then(v => { if (v) { followYear(v); clickYear(v); } });
   embed('c-diverge', 'diverging.vl.json');
+  embed('c-waffle', 'waffle.vl.json').then(v => v && followYear(v));
+  embed('c-lolli', 'lollipop.vl.json').then(v => { if (v) { followYear(v); clickYear(v); } });
   barleyNote();
 });

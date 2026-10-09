@@ -1,0 +1,746 @@
+{
+ "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+ "description": "Three waffle charts of 100 squares, each square 1% of the wheat, barley and canola Australia grew that season. 2019, the drought: 26.9 Mt in all, wheat 54%, barley 38%, canola 8%. 2022, the record: 63.3 Mt in all, wheat 64%, barley 22%, canola 14%. The third waffle shows the year chosen in the panorama.",
+ "padding": {
+  "left": 4,
+  "right": 4,
+  "top": 36,
+  "bottom": 4
+ },
+ "config": {
+  "font": "IBM Plex Sans",
+  "background": null,
+  "view": {
+   "stroke": null
+  },
+  "axis": {
+   "labelFont": "IBM Plex Sans",
+   "titleFont": "IBM Plex Sans",
+   "labelColor": "#C9BFAE",
+   "titleColor": "#C9BFAE",
+   "labelFontSize": 12,
+   "titleFontSize": 13,
+   "titleFontWeight": 400,
+   "domainColor": "#6B5A48",
+   "tickColor": "#6B5A48",
+   "gridColor": "#4A3A2E"
+  },
+  "legend": {
+   "labelFont": "IBM Plex Sans",
+   "titleFont": "IBM Plex Sans",
+   "labelColor": "#F3EEDF",
+   "titleColor": "#F3EEDF",
+   "labelFontSize": 13,
+   "titleFontSize": 13,
+   "titleFontWeight": 400
+  },
+  "concat": {
+   "spacing": 44
+  }
+ },
+ "title": {
+  "text": "Share of the harvest, by crop",
+  "subtitle": "Each square is 1% of the three crops grown that season",
+  "anchor": "start",
+  "color": "#F3EEDF",
+  "subtitleColor": "#C9BFAE",
+  "fontSize": 15,
+  "fontWeight": 600,
+  "subtitleFontSize": 12.5,
+  "font": "IBM Plex Sans",
+  "subtitleFont": "IBM Plex Sans",
+  "offset": 12
+ },
+ "params": [
+  {
+   "name": "selYear",
+   "value": 2019
+  }
+ ],
+ "data": {
+  "url": "data/processed/crops_by_state.csv",
+  "format": {
+   "type": "csv",
+   "parse": {
+    "year": "number",
+    "production_kt": "number"
+   }
+  }
+ },
+ "resolve": {
+  "scale": {
+   "color": "shared"
+  },
+  "legend": {
+   "color": "shared"
+  }
+ },
+ "hconcat": [
+  {
+   "width": 170,
+   "height": 170,
+   "transform": [
+    {
+     "filter": "datum.state_code == 'AUS' && datum.year == 2019"
+    },
+    {
+     "calculate": "datum.production_kt / 1000",
+     "as": "mt"
+    },
+    {
+     "calculate": "indexof(['wheat', 'barley', 'canola'], datum.crop)",
+     "as": "order"
+    },
+    {
+     "joinaggregate": [
+      {
+       "op": "sum",
+       "field": "mt",
+       "as": "total"
+      }
+     ]
+    },
+    {
+     "calculate": "datum.mt / datum.total",
+     "as": "share"
+    }
+   ],
+   "layer": [
+    {
+     "transform": [
+      {
+       "window": [
+        {
+         "op": "sum",
+         "field": "mt",
+         "as": "cum"
+        }
+       ],
+       "sort": [
+        {
+         "field": "order"
+        }
+       ],
+       "frame": [
+        null,
+        0
+       ]
+      },
+      {
+       "calculate": "round(100 * (datum.cum - datum.mt) / datum.total)",
+       "as": "lo"
+      },
+      {
+       "calculate": "round(100 * datum.cum / datum.total)",
+       "as": "hi"
+      },
+      {
+       "calculate": "sequence(datum.lo, datum.hi)",
+       "as": "cell"
+      },
+      {
+       "flatten": [
+        "cell"
+       ]
+      },
+      {
+       "calculate": "datum.cell % 10",
+       "as": "col"
+      },
+      {
+       "calculate": "floor(datum.cell / 10)",
+       "as": "row"
+      }
+     ],
+     "mark": {
+      "type": "square",
+      "size": 210,
+      "opacity": 1
+     },
+     "encoding": {
+      "x": {
+       "field": "col",
+       "type": "quantitative",
+       "scale": {
+        "domain": [
+         -0.5,
+         9.5
+        ],
+        "nice": false
+       },
+       "axis": null
+      },
+      "y": {
+       "field": "row",
+       "type": "quantitative",
+       "scale": {
+        "domain": [
+         -0.5,
+         9.5
+        ],
+        "nice": false
+       },
+       "axis": null
+      },
+      "color": {
+       "field": "crop",
+       "type": "nominal",
+       "sort": [
+        "wheat",
+        "barley",
+        "canola"
+       ],
+       "scale": {
+        "domain": [
+         "wheat",
+         "barley",
+         "canola"
+        ],
+        "range": [
+         "#C8901E",
+         "#A88660",
+         "#E9CF4B"
+        ]
+       },
+       "legend": {
+        "title": null,
+        "orient": "bottom",
+        "direction": "horizontal",
+        "symbolType": "square",
+        "symbolSize": 180,
+        "labelFontSize": 14
+       }
+      },
+      "tooltip": [
+       {
+        "field": "season",
+        "title": "Season"
+       },
+       {
+        "field": "crop",
+        "title": "Crop"
+       },
+       {
+        "field": "share",
+        "title": "Share of the three crops",
+        "format": ".0%"
+       },
+       {
+        "field": "mt",
+        "title": "Grown (Mt)",
+        "format": ".1f"
+       },
+       {
+        "field": "status",
+        "title": "Figure"
+       }
+      ]
+     }
+    },
+    {
+     "transform": [
+      {
+       "aggregate": [
+        {
+         "op": "max",
+         "field": "total",
+         "as": "total"
+        },
+        {
+         "op": "max",
+         "field": "year",
+         "as": "year"
+        }
+       ]
+      },
+      {
+       "calculate": "'2019, the drought'",
+       "as": "lab"
+      },
+      {
+       "calculate": "format(datum.total, '.1f') + ' Mt in all'",
+       "as": "sub"
+      }
+     ],
+     "layer": [
+      {
+       "mark": {
+        "type": "text",
+        "align": "left",
+        "x": 0,
+        "y": -30,
+        "fontSize": 17,
+        "fontWeight": 700,
+        "color": "#F3EEDF"
+       },
+       "encoding": {
+        "text": {
+         "field": "lab"
+        }
+       }
+      },
+      {
+       "mark": {
+        "type": "text",
+        "align": "left",
+        "x": 0,
+        "y": -12,
+        "fontSize": 12.5,
+        "color": "#C9BFAE"
+       },
+       "encoding": {
+        "text": {
+         "field": "sub"
+        }
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "width": 170,
+   "height": 170,
+   "transform": [
+    {
+     "filter": "datum.state_code == 'AUS' && datum.year == 2022"
+    },
+    {
+     "calculate": "datum.production_kt / 1000",
+     "as": "mt"
+    },
+    {
+     "calculate": "indexof(['wheat', 'barley', 'canola'], datum.crop)",
+     "as": "order"
+    },
+    {
+     "joinaggregate": [
+      {
+       "op": "sum",
+       "field": "mt",
+       "as": "total"
+      }
+     ]
+    },
+    {
+     "calculate": "datum.mt / datum.total",
+     "as": "share"
+    }
+   ],
+   "layer": [
+    {
+     "transform": [
+      {
+       "window": [
+        {
+         "op": "sum",
+         "field": "mt",
+         "as": "cum"
+        }
+       ],
+       "sort": [
+        {
+         "field": "order"
+        }
+       ],
+       "frame": [
+        null,
+        0
+       ]
+      },
+      {
+       "calculate": "round(100 * (datum.cum - datum.mt) / datum.total)",
+       "as": "lo"
+      },
+      {
+       "calculate": "round(100 * datum.cum / datum.total)",
+       "as": "hi"
+      },
+      {
+       "calculate": "sequence(datum.lo, datum.hi)",
+       "as": "cell"
+      },
+      {
+       "flatten": [
+        "cell"
+       ]
+      },
+      {
+       "calculate": "datum.cell % 10",
+       "as": "col"
+      },
+      {
+       "calculate": "floor(datum.cell / 10)",
+       "as": "row"
+      }
+     ],
+     "mark": {
+      "type": "square",
+      "size": 210,
+      "opacity": 1
+     },
+     "encoding": {
+      "x": {
+       "field": "col",
+       "type": "quantitative",
+       "scale": {
+        "domain": [
+         -0.5,
+         9.5
+        ],
+        "nice": false
+       },
+       "axis": null
+      },
+      "y": {
+       "field": "row",
+       "type": "quantitative",
+       "scale": {
+        "domain": [
+         -0.5,
+         9.5
+        ],
+        "nice": false
+       },
+       "axis": null
+      },
+      "color": {
+       "field": "crop",
+       "type": "nominal",
+       "sort": [
+        "wheat",
+        "barley",
+        "canola"
+       ],
+       "scale": {
+        "domain": [
+         "wheat",
+         "barley",
+         "canola"
+        ],
+        "range": [
+         "#C8901E",
+         "#A88660",
+         "#E9CF4B"
+        ]
+       },
+       "legend": {
+        "title": null,
+        "orient": "bottom",
+        "direction": "horizontal",
+        "symbolType": "square",
+        "symbolSize": 180,
+        "labelFontSize": 14
+       }
+      },
+      "tooltip": [
+       {
+        "field": "season",
+        "title": "Season"
+       },
+       {
+        "field": "crop",
+        "title": "Crop"
+       },
+       {
+        "field": "share",
+        "title": "Share of the three crops",
+        "format": ".0%"
+       },
+       {
+        "field": "mt",
+        "title": "Grown (Mt)",
+        "format": ".1f"
+       },
+       {
+        "field": "status",
+        "title": "Figure"
+       }
+      ]
+     }
+    },
+    {
+     "transform": [
+      {
+       "aggregate": [
+        {
+         "op": "max",
+         "field": "total",
+         "as": "total"
+        },
+        {
+         "op": "max",
+         "field": "year",
+         "as": "year"
+        }
+       ]
+      },
+      {
+       "calculate": "'2022, the record'",
+       "as": "lab"
+      },
+      {
+       "calculate": "format(datum.total, '.1f') + ' Mt in all'",
+       "as": "sub"
+      }
+     ],
+     "layer": [
+      {
+       "mark": {
+        "type": "text",
+        "align": "left",
+        "x": 0,
+        "y": -30,
+        "fontSize": 17,
+        "fontWeight": 700,
+        "color": "#F3EEDF"
+       },
+       "encoding": {
+        "text": {
+         "field": "lab"
+        }
+       }
+      },
+      {
+       "mark": {
+        "type": "text",
+        "align": "left",
+        "x": 0,
+        "y": -12,
+        "fontSize": 12.5,
+        "color": "#C9BFAE"
+       },
+       "encoding": {
+        "text": {
+         "field": "sub"
+        }
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "width": 170,
+   "height": 170,
+   "transform": [
+    {
+     "filter": "datum.state_code == 'AUS' && datum.year == selYear"
+    },
+    {
+     "calculate": "datum.production_kt / 1000",
+     "as": "mt"
+    },
+    {
+     "calculate": "indexof(['wheat', 'barley', 'canola'], datum.crop)",
+     "as": "order"
+    },
+    {
+     "joinaggregate": [
+      {
+       "op": "sum",
+       "field": "mt",
+       "as": "total"
+      }
+     ]
+    },
+    {
+     "calculate": "datum.mt / datum.total",
+     "as": "share"
+    }
+   ],
+   "layer": [
+    {
+     "transform": [
+      {
+       "window": [
+        {
+         "op": "sum",
+         "field": "mt",
+         "as": "cum"
+        }
+       ],
+       "sort": [
+        {
+         "field": "order"
+        }
+       ],
+       "frame": [
+        null,
+        0
+       ]
+      },
+      {
+       "calculate": "round(100 * (datum.cum - datum.mt) / datum.total)",
+       "as": "lo"
+      },
+      {
+       "calculate": "round(100 * datum.cum / datum.total)",
+       "as": "hi"
+      },
+      {
+       "calculate": "sequence(datum.lo, datum.hi)",
+       "as": "cell"
+      },
+      {
+       "flatten": [
+        "cell"
+       ]
+      },
+      {
+       "calculate": "datum.cell % 10",
+       "as": "col"
+      },
+      {
+       "calculate": "floor(datum.cell / 10)",
+       "as": "row"
+      }
+     ],
+     "mark": {
+      "type": "square",
+      "size": 210,
+      "opacity": 1
+     },
+     "encoding": {
+      "x": {
+       "field": "col",
+       "type": "quantitative",
+       "scale": {
+        "domain": [
+         -0.5,
+         9.5
+        ],
+        "nice": false
+       },
+       "axis": null
+      },
+      "y": {
+       "field": "row",
+       "type": "quantitative",
+       "scale": {
+        "domain": [
+         -0.5,
+         9.5
+        ],
+        "nice": false
+       },
+       "axis": null
+      },
+      "color": {
+       "field": "crop",
+       "type": "nominal",
+       "sort": [
+        "wheat",
+        "barley",
+        "canola"
+       ],
+       "scale": {
+        "domain": [
+         "wheat",
+         "barley",
+         "canola"
+        ],
+        "range": [
+         "#C8901E",
+         "#A88660",
+         "#E9CF4B"
+        ]
+       },
+       "legend": {
+        "title": null,
+        "orient": "bottom",
+        "direction": "horizontal",
+        "symbolType": "square",
+        "symbolSize": 180,
+        "labelFontSize": 14
+       }
+      },
+      "tooltip": [
+       {
+        "field": "season",
+        "title": "Season"
+       },
+       {
+        "field": "crop",
+        "title": "Crop"
+       },
+       {
+        "field": "share",
+        "title": "Share of the three crops",
+        "format": ".0%"
+       },
+       {
+        "field": "mt",
+        "title": "Grown (Mt)",
+        "format": ".1f"
+       },
+       {
+        "field": "status",
+        "title": "Figure"
+       }
+      ]
+     }
+    },
+    {
+     "transform": [
+      {
+       "aggregate": [
+        {
+         "op": "max",
+         "field": "total",
+         "as": "total"
+        },
+        {
+         "op": "max",
+         "field": "year",
+         "as": "year"
+        }
+       ]
+      },
+      {
+       "calculate": "'Year you chose: ' + datum.year",
+       "as": "lab"
+      },
+      {
+       "calculate": "format(datum.total, '.1f') + ' Mt in all'",
+       "as": "sub"
+      }
+     ],
+     "layer": [
+      {
+       "mark": {
+        "type": "text",
+        "align": "left",
+        "x": 0,
+        "y": -30,
+        "fontSize": 17,
+        "fontWeight": 700,
+        "color": "#F3EEDF"
+       },
+       "encoding": {
+        "text": {
+         "field": "lab"
+        }
+       }
+      },
+      {
+       "mark": {
+        "type": "text",
+        "align": "left",
+        "x": 0,
+        "y": -12,
+        "fontSize": 12.5,
+        "color": "#C9BFAE"
+       },
+       "encoding": {
+        "text": {
+         "field": "sub"
+        }
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,415 @@
+{
+ "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+ "description": "Lollipop chart of the money Australian farms kept after costs each season, 1994 to 2026, in today's dollars. Each stick is one season; the head is shaded by that season's national wheat harvest. Lowest: 1994, $0.1 billion. Highest: 2021, $25.2 billion. 2023 to 2025 are ABARES estimates and 2026 is a forecast.",
+ "width": 900,
+ "height": 300,
+ "padding": {
+  "left": 4,
+  "right": 8,
+  "top": 8,
+  "bottom": 4
+ },
+ "config": {
+  "font": "IBM Plex Sans",
+  "background": null,
+  "view": {
+   "stroke": null
+  },
+  "axis": {
+   "labelFont": "IBM Plex Sans",
+   "titleFont": "IBM Plex Sans",
+   "labelColor": "#5A5144",
+   "titleColor": "#5A5144",
+   "labelFontSize": 12,
+   "titleFontSize": 13,
+   "titleFontWeight": 400,
+   "domainColor": "#9C8B74",
+   "tickColor": "#9C8B74",
+   "gridColor": "#DCCDAE"
+  },
+  "legend": {
+   "labelFont": "IBM Plex Sans",
+   "titleFont": "IBM Plex Sans",
+   "labelColor": "#16222C",
+   "titleColor": "#16222C",
+   "labelFontSize": 13,
+   "titleFontSize": 13,
+   "titleFontWeight": 400
+  }
+ },
+ "title": {
+  "text": "Money farmers kept after costs, each season",
+  "subtitle": [
+   "$ billion, today's dollars. Darker heads: bigger wheat harvest that season.",
+   "Dashed heads: ABARES estimates (2023 to 2025) and forecast (2026)."
+  ],
+  "anchor": "start",
+  "color": "#16222C",
+  "subtitleColor": "#5A5144",
+  "fontSize": 15,
+  "fontWeight": 600,
+  "subtitleFontSize": 12.5,
+  "font": "IBM Plex Sans",
+  "subtitleFont": "IBM Plex Sans",
+  "offset": 12
+ },
+ "params": [
+  {
+   "name": "selYear",
+   "value": 2019
+  }
+ ],
+ "data": {
+  "url": "data/processed/crops_by_state.csv",
+  "format": {
+   "type": "csv",
+   "parse": {
+    "year": "number",
+    "production_kt": "number"
+   }
+  }
+ },
+ "transform": [
+  {
+   "filter": "datum.state_code == 'AUS' && datum.crop == 'wheat'"
+  },
+  {
+   "calculate": "datum.production_kt / 1000",
+   "as": "wheat_mt"
+  },
+  {
+   "lookup": "year",
+   "from": {
+    "data": {
+     "url": "data/processed/farm_income.csv",
+     "format": {
+      "type": "csv",
+      "parse": {
+       "year": "number",
+       "real_net_value_m": "number"
+      }
+     }
+    },
+    "key": "year",
+    "fields": [
+     "real_net_value_m",
+     "status"
+    ]
+   },
+   "as": [
+    "real_net_value_m",
+    "income_status"
+   ]
+  },
+  {
+   "filter": "isValid(datum.real_net_value_m)"
+  },
+  {
+   "calculate": "datum.real_net_value_m / 1000",
+   "as": "b"
+  },
+  {
+   "joinaggregate": [
+    {
+     "op": "min",
+     "field": "b",
+     "as": "min_b"
+    },
+    {
+     "op": "max",
+     "field": "b",
+     "as": "max_b"
+    }
+   ]
+  }
+ ],
+ "layer": [
+  {
+   "data": {
+    "values": [
+     {}
+    ]
+   },
+   "transform": [
+    {
+     "filter": "selYear >= 1994"
+    },
+    {
+     "calculate": "selYear - 0.5",
+     "as": "x0"
+    },
+    {
+     "calculate": "selYear + 0.5",
+     "as": "x1"
+    }
+   ],
+   "mark": {
+    "type": "rect",
+    "color": "#F0C766",
+    "opacity": 0.45,
+    "cornerRadius": 6
+   },
+   "encoding": {
+    "x": {
+     "field": "x0",
+     "type": "quantitative",
+     "scale": {
+      "domain": [
+       1993.5,
+       2026.5
+      ],
+      "nice": false,
+      "zero": false
+     },
+     "axis": {
+      "title": null,
+      "values": [
+       1994,
+       1999,
+       2004,
+       2009,
+       2014,
+       2019,
+       2024
+      ],
+      "format": "d",
+      "grid": false,
+      "labelPadding": 6
+     }
+    },
+    "x2": {
+     "field": "x1"
+    },
+    "y": {
+     "value": 0
+    },
+    "y2": {
+     "value": 300
+    }
+   }
+  },
+  {
+   "mark": {
+    "type": "rule",
+    "color": "#6B5A48",
+    "strokeWidth": 2
+   },
+   "encoding": {
+    "x": {
+     "field": "year",
+     "type": "quantitative",
+     "scale": {
+      "domain": [
+       1993.5,
+       2026.5
+      ],
+      "nice": false,
+      "zero": false
+     },
+     "axis": {
+      "title": null,
+      "values": [
+       1994,
+       1999,
+       2004,
+       2009,
+       2014,
+       2019,
+       2024
+      ],
+      "format": "d",
+      "grid": false,
+      "labelPadding": 6
+     }
+    },
+    "y": {
+     "field": "b",
+     "type": "quantitative"
+    },
+    "y2": {
+     "datum": 0
+    }
+   }
+  },
+  {
+   "mark": {
+    "type": "circle",
+    "size": 150,
+    "stroke": "#3A2A1E",
+    "strokeWidth": 1.2,
+    "opacity": 1,
+    "cursor": "pointer"
+   },
+   "encoding": {
+    "x": {
+     "field": "year",
+     "type": "quantitative",
+     "scale": {
+      "domain": [
+       1993.5,
+       2026.5
+      ],
+      "nice": false,
+      "zero": false
+     },
+     "axis": {
+      "title": null,
+      "values": [
+       1994,
+       1999,
+       2004,
+       2009,
+       2014,
+       2019,
+       2024
+      ],
+      "format": "d",
+      "grid": false,
+      "labelPadding": 6
+     }
+    },
+    "y": {
+     "field": "b",
+     "type": "quantitative",
+     "scale": {
+      "domain": [
+       0,
+       28
+      ]
+     },
+     "axis": {
+      "title": null,
+      "values": [
+       0,
+       5,
+       10,
+       15,
+       20,
+       25
+      ],
+      "labelExpr": "'$' + datum.value + 'b'",
+      "domain": false,
+      "ticks": false,
+      "grid": true
+     }
+    },
+    "fill": {
+     "field": "wheat_mt",
+     "type": "quantitative",
+     "scale": {
+      "domain": [
+       10,
+       40
+      ],
+      "range": [
+       "#F6EBD0",
+       "#7A5300"
+      ],
+      "clamp": true
+     },
+     "legend": {
+      "title": "Wheat harvest (Mt)",
+      "orient": "top-left",
+      "direction": "horizontal",
+      "gradientLength": 140,
+      "values": [
+       10,
+       20,
+       30,
+       40
+      ]
+     }
+    },
+    "strokeDash": {
+     "condition": {
+      "test": "datum.income_status != 'actual'",
+      "value": [
+       2,
+       2
+      ]
+     },
+     "value": [
+      1,
+      0
+     ]
+    },
+    "tooltip": [
+     {
+      "field": "season",
+      "title": "Season"
+     },
+     {
+      "field": "b",
+      "title": "Kept after costs ($b, today's dollars)",
+      "format": ".1f"
+     },
+     {
+      "field": "wheat_mt",
+      "title": "Wheat harvest (Mt)",
+      "format": ".1f"
+     },
+     {
+      "field": "income_status",
+      "title": "Figure"
+     }
+    ]
+   }
+  },
+  {
+   "transform": [
+    {
+     "filter": "datum.year == selYear || datum.b == datum.min_b || datum.b == datum.max_b"
+    },
+    {
+     "calculate": "'$' + format(datum.b, '.1f') + 'b' + (datum.b == datum.max_b ? ', a record' : '')",
+     "as": "lab"
+    }
+   ],
+   "mark": {
+    "type": "text",
+    "dy": -14,
+    "fontSize": 12.5,
+    "color": "#16222C",
+    "fontWeight": {
+     "expr": "datum.year == selYear ? 700 : 400"
+    }
+   },
+   "encoding": {
+    "x": {
+     "field": "year",
+     "type": "quantitative",
+     "scale": {
+      "domain": [
+       1993.5,
+       2026.5
+      ],
+      "nice": false,
+      "zero": false
+     },
+     "axis": {
+      "title": null,
+      "values": [
+       1994,
+       1999,
+       2004,
+       2009,
+       2014,
+       2019,
+       2024
+      ],
+      "format": "d",
+      "grid": false,
+      "labelPadding": 6
+     }
+    },
+    "y": {
+     "field": "b",
+     "type": "quantitative"
+    },
+    "text": {
+     "field": "lab"
+    }
+   }
+  }
+ ]
+}

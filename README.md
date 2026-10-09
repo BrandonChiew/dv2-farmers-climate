@@ -16,7 +16,7 @@ then visit http://localhost:8000.
 ## What is where
 | Path | Contents |
 |---|---|
-| `index.html` | the page: hero, nine story sections, footer |
+| `index.html` | the page: hero, ten story sections, footer |
 | `assets/hero.svg`, `assets/hero-front.svg` | hero drawing (back layer, and the wheat stalks in front of the title); swap in your own drawing here |
 | `css/style.css` | design tokens, layout, layered SVG scenes, phone layout |
 | `js/copy.js` | **all page text**, one commented block per section; edit wording here |
@@ -38,8 +38,11 @@ then visit http://localhost:8000.
 | `wa_map.vl.json` | WA map with rain-band overlay + locator | tooltips |
 | `wa_scatter.vl.json` | scatterplot | follows the selected year |
 | `swing.vl.json` | dumbbell + slopegraph | hover a state to highlight it in both |
+| `bump.vl.json` | bump chart (rank of states by wheat grown, 1989–2025) | hover a state; follows the selected year; click a point to choose a year |
 | `streamgraph.vl.json` | streamgraph | tooltips; follows the selected year |
 | `diverging.vl.json` | diverging bars | tooltips |
+| `waffle.vl.json` | waffle charts (crop share: 2019, 2022, chosen year) | third waffle follows the selected year; tooltips |
+| `lollipop.vl.json` | lollipop chart (farm income per season, head shaded by wheat harvest) | follows the selected year; click a head to choose a year; tooltips |
 
 ## Data
 Bureau of Meteorology (rainfall series and grid, ENSO history, Annual Climate Statements), ABARES (Australian Crop Report and Agricultural commodities, September 2026) and the Australian Bureau of Statistics (state boundaries). Details in `data/SOURCES.md`.
